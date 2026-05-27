@@ -1,0 +1,31 @@
+name: Compile Resume
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    env:
+      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v6
+
+      - name: Compile LaTeX to PDF
+        run: |
+          curl -L "https://latexonline.cc/compile?git=https://github.com/${{ github.repository }}&target=resume.tex&command=xelatex&force=true" -o dist/resume.pdf
+
+      - name: Commit and push PDF
+        run: |
+          git config --global user.name "github-actions[bot]"
+          git config --global user.email "github-actions[bot]@users.noreply.github.com"
+          git add dist/resume.pdf
+          git commit -m "chore: auto-compile resume PDF" || echo "No changes to commit"
+          git push
