@@ -61,8 +61,8 @@ run_tlmgr() {
 
 tlmgr_package_name() {
   case "$1" in
-    sourcesanspro) echo "sourcesans" ;;
     tikzfill.image) echo "tikzfill" ;;
+    sourcesanspro) echo "sourcesanspro" ;;
     *) echo "$1" ;;
   esac
 }
@@ -85,9 +85,12 @@ install_xelatex_macos() {
   if command -v brew >/dev/null 2>&1; then
     if prompt_yes_no "Install BasicTeX via Homebrew (brew install --cask basictex)?"; then
       brew install --cask basictex
-      echo "Add TeX to PATH, then re-run this task:"
-      echo "  export PATH=\"/Library/TeX/texbin:\$PATH\""
-      return 0
+      if [[ -d "/Library/TeX/texbin" ]]; then
+        export PATH="/Library/TeX/texbin:$PATH"
+        echo "BasicTeX installed and PATH updated for this session."
+        return 0
+      fi
+      return 1
     fi
   fi
   echo "Install MacTeX or BasicTeX from https://www.tug.org/mactex/ or run: brew install --cask basictex"
@@ -95,6 +98,11 @@ install_xelatex_macos() {
 }
 
 ensure_xelatex() {
+  # Check standard MacOS path first in case it's not in the environment PATH
+  if [[ -x /Library/TeX/texbin/xelatex ]] && ! command -v xelatex >/dev/null 2>&1; then
+    export PATH="/Library/TeX/texbin:$PATH"
+  fi
+
   if command -v xelatex >/dev/null 2>&1; then
     echo "xelatex: $(command -v xelatex)"
     xelatex --version | head -n1

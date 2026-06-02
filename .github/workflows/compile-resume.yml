@@ -18,9 +18,21 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v6
 
-      - name: Compile LaTeX to PDF
+      - name: Install latex-online CLI
         run: |
-          curl -L "https://latexonline.cc/compile?git=https://github.com/${{ github.repository }}&target=resume.tex&command=xelatex&force=true" -o dist/resume.pdf
+          curl -L https://raw.githubusercontent.com/aslushnikov/latex-online/master/util/latexonline > laton
+          chmod 755 laton
+
+      - name: Compile LaTeX to PDF
+        timeout-minutes: 5
+        run: |
+          mkdir -p dist
+          ./laton -d https://latexonline.cc -f -c xelatex -o dist/resume.pdf \
+            resume.tex \
+            awesome-cv.cls \
+            fontawesome.sty \
+            fonts/*.ttf \
+            resume/*.tex
 
       - name: Commit and push PDF
         run: |
