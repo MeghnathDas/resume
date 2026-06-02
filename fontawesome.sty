@@ -1,0 +1,37 @@
+%% Local project copy of fontawesome.sty with the font loaded from ./fonts/.
+%% Based on fontawesome 2016/05/15 v4.6.3.1.
+\NeedsTeXFormat{LaTeX2e}
+\ProvidesPackage{fontawesome}[2016/05/15 v4.6.3.1 font awesome icons]
+
+\RequirePackage{ifxetex,ifluatex}
+\newif\iffontawesome@otf\fontawesome@otffalse
+\ifxetex
+  \fontawesome@otftrue
+\else
+  \ifluatex
+    \fontawesome@otftrue
+  \fi
+\fi
+
+\newcommand*{\faicon}[1]{%
+  {\csname faicon@#1\endcsname}}
+
+\input{fontawesomesymbols-generic.tex}
+
+\iffontawesome@otf
+  \usepackage{fontspec}
+  \newfontfamily{\FA}[Path=fonts/]{FontAwesome}
+  \input{fontawesomesymbols-xeluatex.tex}
+\else
+  \DeclareRobustCommand\FAone{\fontencoding{U}\fontfamily{fontawesomeone}\selectfont}
+  \DeclareRobustCommand\FAtwo{\fontencoding{U}\fontfamily{fontawesometwo}\selectfont}
+  \DeclareRobustCommand\FAthree{\fontencoding{U}\fontfamily{fontawesomethree}\selectfont}
+  \input{fontawesomesymbols-pdftex.tex}
+\fi
+
+\renewcommand{\faHourglass}[1][]{%
+  \faicon{hourglass\if\relax\detokenize{#1}\relax\else-#1\fi}}
+\renewcommand{\faBattery}[1][4]{%
+  \faicon{battery-#1}}
+
+\endinput

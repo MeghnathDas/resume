@@ -4,7 +4,7 @@
     {
         "label": "Build Resume PDF",
         "type": "shell",
-        "command": "mkdir -p dist && xelatex -output-directory=dist resume.tex && find dist -type f \\( -name '*.log' -o -name '*.aux' -o -name '*.out' -o -name '*.toc' -o -name '*.synctex.gz' \\) -delete",
+        "command": "python3 scripts/generate_latex_resume.py && mkdir -p dist && xelatex -output-directory=dist resume.tex && find dist -type f \\( -name '*.log' -o -name '*.aux' -o -name '*.out' -o -name '*.toc' -o -name '*.synctex.gz' \\) -delete",
         "group": {
             "kind": "build",
             "isDefault": true

@@ -33,6 +33,40 @@ run_as_root() {
   fi
 }
 
+run_tlmgr() {
+  if [[ "$(id -u)" -eq 0 ]]; then
+    tlmgr "$@"
+    return $?
+  fi
+
+  if command -v sudo >/dev/null 2>&1; then
+    if [[ -t 0 ]] || sudo -n true >/dev/null 2>&1; then
+      sudo tlmgr "$@"
+      return $?
+    fi
+  fi
+
+  if [[ "${1:-}" == "install" ]]; then
+    echo "  -> sudo is unavailable; trying tlmgr user mode"
+    tlmgr --usermode init-usertree >/dev/null 2>&1 || true
+    tlmgr --usermode "$@"
+    return $?
+  fi
+
+  echo "  -> cannot run sudo tlmgr without an interactive terminal or cached sudo credentials"
+  echo "  -> run this in a terminal:"
+  echo "     sudo tlmgr $*"
+  return 1
+}
+
+tlmgr_package_name() {
+  case "$1" in
+    sourcesanspro) echo "sourcesans" ;;
+    tikzfill.image) echo "tikzfill" ;;
+    *) echo "$1" ;;
+  esac
+}
+
 install_xelatex_linux() {
   if ! command -v apt-get >/dev/null 2>&1; then
     echo "ERROR: apt-get not found. Install TeX Live manually (texlive-xetex, texlive-latex-extra)."
@@ -43,6 +77,7 @@ install_xelatex_linux() {
   run_as_root env DEBIAN_FRONTEND=noninteractive apt-get install -y \
     texlive-xetex \
     texlive-latex-extra \
+    texlive-fonts-extra \
     texlive-fonts-recommended
 }
 
@@ -110,14 +145,20 @@ is_debian_texlive() {
 
 install_missing_package() {
   local pkg="$1"
+  local tlmgr_pkg
+  tlmgr_pkg="$(tlmgr_package_name "$pkg")"
   if is_debian_texlive && command -v apt-get >/dev/null 2>&1; then
-    echo "  -> installing texlive-latex-extra via apt (Debian TeX Live)"
-    run_as_root env DEBIAN_FRONTEND=noninteractive apt-get install -y texlive-latex-extra
+    echo "  -> installing Awesome-CV TeX dependencies via apt (Debian TeX Live)"
+    run_as_root env DEBIAN_FRONTEND=noninteractive apt-get install -y \
+      texlive-xetex \
+      texlive-latex-extra \
+      texlive-fonts-extra \
+      texlive-fonts-recommended
     return 0
   fi
   if command -v tlmgr >/dev/null 2>&1 && ! is_debian_texlive; then
-    if prompt_yes_no "Install $pkg via tlmgr?"; then
-      run_as_root tlmgr install "$pkg" || true
+    if prompt_yes_no "Install $tlmgr_pkg via tlmgr?"; then
+      run_tlmgr install "$tlmgr_pkg" || true
     fi
     return 0
   fi
@@ -136,13 +177,33 @@ if command -v tlmgr >/dev/null 2>&1; then
   if is_debian_texlive; then
     echo "Debian/Ubuntu TeX Live: use apt for packages, not tlmgr (see README.tlmgr-on-Debian.md)"
   elif prompt_yes_no "Run 'tlmgr update --self'?"; then
-    run_as_root tlmgr update --self || true
+    run_tlmgr update --self || true
   fi
 else
   echo "tlmgr: not installed (optional on Linux when using apt texlive packages)"
 fi
 
-packages=(enumitem geometry fontspec microtype)
+packages=(
+  array
+  enumitem
+  ragged2e
+  geometry
+  fancyhdr
+  xcolor
+  ifxetex
+  xifthen
+  ifmtarg
+  etoolbox
+  setspace
+  fontspec
+  unicode-math
+  fontawesome
+  sourcesanspro
+  tcolorbox
+  tikzfill.image
+  parskip
+  hyperref
+)
 missing=()
 for p in "${packages[@]}"; do
   printf "Checking package %s... " "$p"
@@ -150,19 +211,28 @@ for p in "${packages[@]}"; do
     echo "installed"
   else
     echo "missing"
-    missing+=("$p")
     install_missing_package "$p"
+    if kpsewhich "${p}.sty" >/dev/null 2>&1; then
+      echo "  -> installed"
+    else
+      missing+=("$p")
+    fi
   fi
 done
 
 echo
 if ((${#missing[@]})); then
+  tlmgr_missing=()
+  for p in "${missing[@]}"; do
+    tlmgr_missing+=("$(tlmgr_package_name "$p")")
+  done
   echo "WARNING: Some packages may still be missing: ${missing[*]}"
-  echo "On Ubuntu/Debian: apt install texlive-latex-extra texlive-xetex"
+  echo "On Ubuntu/Debian: apt install texlive-xetex texlive-latex-extra texlive-fonts-extra texlive-fonts-recommended"
+  echo "On macOS/BasicTeX: sudo tlmgr install ${tlmgr_missing[*]}"
   exit 1
 fi
 
 echo "Done. xelatex and required packages are ready."
 echo "Build with:"
-echo "  mkdir -p dist && xelatex -output-directory=dist resume.tex"
+echo "  mkdir -p dist && xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=dist resume.tex && xelatex -interaction=nonstopmode -halt-on-error -file-line-error -output-directory=dist resume.tex"
 echo
