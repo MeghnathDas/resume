@@ -14,8 +14,17 @@ LaTeX source for the professional resume of **Meghnath Das**, Senior .NET / Full
 
 ## Building Locally
 
+### Generate LaTeX from JSON
+
+The resume content is managed in `profile.datasource.json`. To update the `.tex` file:
+
+```bash
+python3 scripts/generate_resume.py
+```
+
 ### Prerequisites
 
+- [Python 3](https://www.python.org/) (required for generating the LaTeX source from JSON)
 - [TeX Live](https://www.tug.org/texlive/) or any XeLaTeX distribution with `xelatex` available in `PATH`
 
 ### Build
@@ -31,10 +40,11 @@ The compiled PDF is output to `dist/resume.pdf`. Intermediate files (`.log`, `.a
 Open the project in VS Code and run:
 
 - **Build:** **Terminal → Run Build Task** (`⌘⇧B`) → runs `Build Resume PDF` (compile + cleanup).
-- **Setup:** **Terminal → Run Task…** → `Configure xelatex` to validate your local XeLaTeX setup and (optionally) install/update TeX Live packages via `tlmgr`.
+- **Setup:** **Terminal → Run Task…** → `Setup Environment` to validate your local setup and (optionally) install/update TeX Live packages via `tlmgr`.
 
-`Configure xelatex` runs `scripts/configure_xelatex.sh` and will:
+`Setup Environment` runs `scripts/setup_environment.sh` and will:
 
+- Check `python3` is available on your `PATH`
 - Check `xelatex` is available on your `PATH`
 - Check `tlmgr` (and warn if missing)
 - Optionally run `sudo tlmgr update --self` and `sudo tlmgr update --all`
@@ -54,9 +64,9 @@ Open the project in VS Code and run:
 ├── dist/
 │   └── resume.pdf              # Compiled output (auto-generated)
 ├── scripts/
-│   └── configure_xelatex.sh   # XeLaTeX environment setup helper
+│   └── setup_environment.sh   # Environment setup helper
 └── .github/workflows/
-    └── compile-resume.yml      # CI: auto-compiles and commits PDF on push
+    └── compile-resume.yml      # CI: auto-compiles and uploads the resume PDF as a build artifact
 ```
 
 ---

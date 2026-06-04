@@ -4,7 +4,7 @@
     {
         "label": "Build Resume PDF",
         "type": "shell",
-        "command": "mkdir -p dist && xelatex -output-directory=dist resume.tex && find dist -type f \\( -name '*.log' -o -name '*.aux' -o -name '*.out' -o -name '*.toc' -o -name '*.synctex.gz' \\) -delete",
+            "command": "mkdir -p dist && python3 scripts/generate_resume.py && xelatex -output-directory=dist resume.tex && find dist -type f \\( -name '*.log' -o -name '*.aux' -o -name '*.out' -o -name '*.toc' -o -name '*.synctex.gz' \\) -delete",
         "group": {
             "kind": "build",
             "isDefault": true
@@ -18,9 +18,9 @@
         "problemMatcher": []
     },
     {
-        "label": "Configure xelatex",
+        "label": "Setup Environment",
         "type": "shell",
-        "command": "bash ${workspaceFolder}/scripts/configure_xelatex.sh --yes",
+        "command": "bash ${workspaceFolder}/scripts/setup_environment.sh --yes",
         "options": {
             "cwd": "${workspaceFolder}",
             "env": {

@@ -59,6 +59,42 @@ install_xelatex_macos() {
   return 1
 }
 
+ensure_python3() {
+  if command -v python3 >/dev/null 2>&1; then
+    echo "python3: $(command -v python3)"
+    python3 --version
+    return 0
+  fi
+
+  echo "python3 not found on PATH."
+  case "$(uname -s)" in
+    Linux)
+      if prompt_yes_no "Install python3 with apt?"; then
+        run_as_root apt-get update -qq
+        run_as_root env DEBIAN_FRONTEND=noninteractive apt-get install -y python3
+      else
+        return 1
+      fi
+      ;;
+    Darwin)
+      if command -v brew >/dev/null 2>&1; then
+        if prompt_yes_no "Install python3 via Homebrew (brew install python3)?"; then
+          brew install python3
+        fi
+      else
+        echo "Homebrew not found. Install Python 3 from https://www.python.org/downloads/"
+      fi
+      ;;
+  esac
+
+  if command -v python3 >/dev/null 2>&1; then
+    echo "python3: $(command -v python3)"
+    python3 --version
+    return 0
+  fi
+  return 1
+}
+
 ensure_xelatex() {
   if command -v xelatex >/dev/null 2>&1; then
     echo "xelatex: $(command -v xelatex)"
@@ -124,9 +160,10 @@ install_missing_package() {
   echo "  -> Install texlive-latex-extra (Debian/Ubuntu) or use tlmgr on upstream TeX Live."
 }
 
-echo "=== Configure xelatex ==="
+echo "=== Setup Environment ==="
 echo
 
+ensure_python3 || exit 1
 ensure_xelatex || exit 1
 
 echo
@@ -162,7 +199,7 @@ if ((${#missing[@]})); then
   exit 1
 fi
 
-echo "Done. xelatex and required packages are ready."
+echo "Done. Environment and required packages are ready."
 echo "Build with:"
 echo "  mkdir -p dist && xelatex -output-directory=dist resume.tex"
 echo

@@ -9,23 +9,26 @@ on:
 jobs:
   compile:
     runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    env:
-      FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Generate LaTeX from JSON
+        run: python3 scripts/generate_resume.py
 
       - name: Compile LaTeX to PDF
         run: |
+          mkdir -p dist
           curl -L "https://latexonline.cc/compile?git=https://github.com/${{ github.repository }}&target=resume.tex&command=xelatex&force=true" -o dist/resume.pdf
 
-      - name: Commit and push PDF
-        run: |
-          git config --global user.name "github-actions[bot]"
-          git config --global user.email "github-actions[bot]@users.noreply.github.com"
-          git add dist/resume.pdf
-          git commit -m "chore: auto-compile resume PDF" || echo "No changes to commit"
-          git push
+      - name: Upload PDF Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: resume-dist
+          path: dist/resume.pdf

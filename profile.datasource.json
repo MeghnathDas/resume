@@ -1,0 +1,137 @@
+{
+  "name": "MEGHNATH DAS",
+  "email": "meghnath.babin@gmail.com",
+  "phone": "+91 9831267437",
+  "location": "Bengaluru, Karnataka, India",
+  "website": "https://meghnathdas.github.io/",
+  "skills": [
+    {
+      "category": "Languages & Frameworks",
+      "items": "C#, Linq, EF, .Net Core, ASP.Net Web API, Asp.Net Identity, Angular, TypeScript, JavaScript"
+    },
+    {
+      "category": "Databases & Cloud",
+      "items": "MS Sql Server, Cosmos DB, MongoDB, Azure Service Bus, Azure Functions, AWS Marketplace"
+    },
+    {
+      "category": "Tools & Methodologies",
+      "items": "REST API, DI, MS Unit Testing, Jasmine, Karma, Git, TFS, Azure DevOps, CI/CD, Agile, Scrum"
+    }
+  ],
+  "experience": [
+    {
+      "company": "DataArt",
+      "period": "Oct 2023 – Current",
+      "role": "Senior Developer",
+      "location": "Bengaluru",
+      "highlights": [
+        "Architected and developed key features for a laboratory application, collaborating with global cross-functional teams.",
+        "Designed and implemented .NET Core microservices integrated with SQL Server and REST APIs, improving data accuracy and consistency.",
+        "Refactored UI and backend code using SOLID principles and design patterns, improving maintainability and performance."
+      ]
+    },
+    {
+      "company": "Ciklum",
+      "period": "Apr 2022 – Apr 2023",
+      "role": "Expert .NET Developer",
+      "location": "Chennai",
+      "highlights": [
+        "Influential member of a dev team involved in a crypto transaction app.",
+        "Improving codebases and peer reviewing code changes.",
+        "Training by collaborating with teams from different time zones."
+      ]
+    },
+    {
+      "company": "Aalgro Foods",
+      "period": "Jun 2020 – Apr 2022",
+      "role": "Lead Full Stack Engineer",
+      "location": "Bengaluru",
+      "highlights": [
+        "Application Architecture, Backend and UI development from scratch.",
+        "Settled up company-wide cloud (Azure) infrastructure, which resulted in seamless application hosting and employee access management.",
+        "Built an Open ID Connect server, which is responsible for the authentication and authorisation process of multiple resource servers.",
+        "Team handling, trained developers to have an improved development process with automation tools and implementation of DevOps."
+      ]
+    },
+    {
+      "company": "Eurofins IT Solutions",
+      "period": "Sep 2018 – May 2020",
+      "role": "Sr. Software Engineer",
+      "location": "Bengaluru",
+      "highlights": [
+        "Built applications that let users view and keep track of analytical/critical data in every step of their international laboratory processes.",
+        "Developed new reusable controls/features which increased application development speed by 25%.",
+        "Introduced a solution for localisation/timezone problems.",
+        "Accomplished a smooth technology upgrade for the existing application before 30% of the estimated time."
+      ]
+    },
+    {
+      "company": "Cognizant Technology Solutions",
+      "period": "May 2018 – Sep 2018",
+      "role": "Associate",
+      "location": "Kolkata",
+      "highlights": [
+        "Worked in an application development team for the account of a US client in the insurance domain.",
+        "Achieved technology up-gradation for some core and complex components of the main application."
+      ]
+    },
+    {
+      "company": "Infocus Technologies (Client: PWC)",
+      "period": "Nov 2015 – May 2018",
+      "role": "Dot Net Developer",
+      "location": "Kolkata",
+      "highlights": [
+        "Worked with client PriceWaterhouseCoopers on multiple auditing and finance-related application development teams.",
+        "Implemented a cross-application data exchange process to serve millions of data processing."
+      ]
+    },
+    {
+      "company": "Bestman Infotech",
+      "period": "Mar 2012 – Nov 2015",
+      "role": "Senior Software Developer",
+      "location": "Kolkata",
+      "highlights": [
+        "Introduced the SMS notification plugin and online licence activation module for their hotel management application.",
+        "Designed and developed an online automated hotel reservation data seeding application to serve information to government departments."
+      ]
+    },
+    {
+      "company": "MP Software Solutions",
+      "period": "Mar 2011 – Mar 2012",
+      "role": "Jr. Software Engineer",
+      "location": "Kolkata",
+      "highlights": [
+        "Developed new solutions from scratch.",
+        "Improving system quality by identifying issues and familiar patterns, and developing standard operating procedures."
+      ]
+    }
+  ],
+  "projects": [
+    {
+      "name": "Aalgro",
+      "details": "B2B platform for fresh produce (fruits & vegetables) trading. Built using Angular, ASP.NET Web API, Custom OIDC Server, Azure (Function, Service Bus, App Service, KeyVault, DevOps), SQL Server, MongoDB, Git."
+    },
+    {
+      "name": "RIO, AccrTr, BMR",
+      "details": "Laboratory process data changes reporting platform. Built using Angular, .Net Web API, Sql Server, .Net Service, TFS, Git, Karma, Jasmine, CI/CD, VS Code, Agile, Scrum."
+    },
+    {
+      "name": "UNIRISQ",
+      "details": "Financial and risk assessment management platform built for PriceWaterhouseCoopers. Powered by C#.Net, jQuery, AngularJS, SQL Server 2012, WCF, Web API, SSIS, TFS."
+    }
+  ],
+  "education": [
+    {
+      "school": "Punjab Technical University",
+      "period": "2011 – 2013",
+      "degree": "Master\\textquotesingle{}s Computer Applications",
+      "location": "India"
+    },
+    {
+      "school": "Sikkim Manipal University",
+      "period": "2007 – 2010",
+      "degree": "Bachelor of Science Information Technology",
+      "location": "India"
+    }
+  ]
+}
