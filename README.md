@@ -73,7 +73,7 @@ Open the project in VS Code and run:
 
 ## CI / CD
 
-A GitHub Actions workflow (`.github/workflows/compile-resume.yml`) automatically compiles the resume and commits the updated `dist/resume.pdf` on every push to `main`.
+A GitHub Actions workflow (`.github/workflows/compile-resume.yml`) automatically compiles the resume and uploads the updated `dist/resume.pdf` as a build artifact on every push to `main`.
 
 ---
 
